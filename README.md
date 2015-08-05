@@ -76,11 +76,11 @@ After successful login, user will be displayed with list of accounts and roles f
 
 Login Screen
 
-![Screen Shot Login Screen ](/images/login.png)
+![Screen Shot Login ](/images/login.png)
 
 Home Screen
 
-![alt tag](../images/home.png)
+![Screen Shot Home ](/images/home.png)
 
 - If the logged in user belongs to an Admin LDAP group, the user is identified as admin user and will have additional menu options to 
   - View and Add/Update and inactivate accounts
@@ -91,13 +91,13 @@ Home Screen
 
 Accounts Screen
 
-![alt tag](../images/accounts.png)
+![Screen Shot Accounts ](/images/accounts.png)
 
 - Admin user has option to Add/Update additional accounts. New account can be added by long term keys. Long term keys if correct, gets account number and account alias. Account number is a read-only field and alias can be changed if needed. Secret Key will be encrypted and stored.
 
 Add Account Screen
 
-![alt tag](../images/add_account.png)
+![Screen Shot Add Account ](/images/add_account.png)
 
 Note: In addition to having elevated privileges, these long term keys will need to have IAM read only access role, this is needed to fetch 
 
@@ -108,25 +108,25 @@ Note: In addition to having elevated privileges, these long term keys will need 
 
 Account Role Policy (ARP) relation Screen
 
-![alt tag](../images/arp.png)
+![Screen Shot ARP ](/images/arp.png)
 
 - Admin user will have option to add new ARP record. User selects the account and AWS role and inputs the policy. The policy that is entered for the selected role will give respective access to the generated tokens. So within the application this policy will redefine access rights to the role selected but does not make any changes in AWS account. 
 
 Add ARP Screen
 
-![alt tag](../images/add_arp.png)
+![Screen Shot Add ARP ](/images/add_arp.png)
 
 - ADG(LDAP/Active Directory Group) relation screen: This screen will display all the relationships between the ARP (account role policy) and LDAP groups.  If logged in user belongs to any of these LDAP groups that been mapped, they will have an option on the home screen to generate federated tokens in those respective account/role combination. 
 
 AD Group relation screen
 
-![alt tag](../images/adg.png)
+![Screen Shot AD Group ](/images/adg.png)
 
 - Admin Users can add new LDAP Group relationship by selecting a pre-populated accounts and respective ARP records created earlier. All LDAP groups are displayed to select from
 
 Add AD Group relation screen
 
-![alt tag](../images/add_adg.png)
+![Screen Shot AD Group Relation ](/images/add_adg.png)
 
 ###References 
 
