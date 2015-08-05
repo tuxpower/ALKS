@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/aop
+                            http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+                            http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                            http://www.springframework.org/schema/jee
+                            http://www.springframework.org/schema/jee/spring-jee-3.2.xsd 
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<!-- Activates various annotations to be detected in bean classes -->
+	<context:annotation-config />
+	
+		<!-- Scans the classpath for annotated components that will be auto-registered as Spring beans.
+	 For example @Controller and @Service. Make sure to set the correct base-package-->
+	<context:component-scan base-package="com.alks.service.config" />
+	
+
+        <!--
+                This will automatically locate any and all property files you have
+                within your classpath, provided they fall under the META-INF
+                directory. The located property files are parsed and their values can
+                then be used within application context files in the form of
+                ${propertyKey}.
+        -->
+        <context:property-placeholder location="classpath*:*.properties" />
+        
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+             <list>
+                  <value>messages</value>
+             </list>
+        </property>
+    </bean>
+    <!-- PropertyPlaceholder can define multiple resource locations -->
+    <!-- SYSTEM_PROPERTIES_MODE_OVERRIDE, any properties specified with a -D on the java call will override what is found in the properties file, so 'java -Duser.name=ted ...' will take precedence. -->
+    <!-- With ignoreResourceNotFound, the properties files can also be optionally absent without throwing an exception -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	    <property name="locations">
+	        <list>
+	            <value>classpath:production-config.properties</value>
+	            <value>classpath:test-config.properties</value>
+	        </list>
+	    </property>
+	    <property name="ignoreUnresolvablePlaceholders" value="true"/>
+	    <property name="ignoreResourceNotFound" value="true"/>
+	    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>        
+	</bean>
+
+    
+</beans>
