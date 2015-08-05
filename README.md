@@ -76,7 +76,7 @@ After successful login, user will be displayed with list of accounts and roles f
 
 Login Screen
 
-![alt tag](../images/login.png)
+![Screen Shot Login Screen ](/images/login.png)
 
 Home Screen
 
