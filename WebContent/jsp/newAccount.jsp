@@ -57,6 +57,10 @@ function callAjax(){
 	});
 }
 
+//-->
+</script>
+
+<script type="text/javascript">
 
 function validateForm(){
 	var accessKey = document.getElementById('accessKey').value;
@@ -75,8 +79,6 @@ function validateForm(){
 	}
 }
 
-
-//-->
 </script>
 <form:form id="AccountForm" action="add.htm" method="POST" modelAttribute="account">
 
