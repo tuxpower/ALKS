@@ -15,16 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.amazonaws.util.json.JSONArray;
 import com.alks.model.ui.ADG;
 import com.alks.model.ui.ARP;
 import com.alks.model.ui.Account;
 import com.alks.model.ui.User;
+import com.alks.service.config.MessageUtils;
 import com.alks.service.delegate.ADGroupRoleMaster;
 import com.alks.service.impl.ADGServiceImpl;
-import com.alks.service.impl.ADGroupsServiceImpl;
 import com.alks.service.impl.ARPServiceImpl;
+import com.alks.service.impl.ADGroupsServiceImpl;
 import com.alks.service.impl.AccountServiceImpl;
-import com.amazonaws.util.json.JSONArray;
 
 /**
  * The controller for AD Groups section of ALKS
@@ -50,11 +51,12 @@ public class ADGController extends MasterController {
 	 * 
 	 * @return mav an object containing all page attributes
 	 */
-	@RequestMapping(value = "viewAllADG", method = RequestMethod.GET)
+	@RequestMapping(value = "viewAllADG", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView viewAll() {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("adgViewAll");
 		mav.addObject("adgs", ADGroupRoleMaster.getAllADG());
+		mav.addObject("adg",new ADG());
 		logger.debug("action=viewAllADG");
 		return mav;
 	}
@@ -65,7 +67,7 @@ public class ADGController extends MasterController {
 	 * @param error
 	 * @return mav an object containing all page attributes
 	 */
-	@RequestMapping(value = "new", method = RequestMethod.GET)
+	@RequestMapping(value = "new", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView newADG(HttpServletRequest request) {
 		// Get All the AD groups
 		ModelAndView mav = new ModelAndView();
@@ -73,13 +75,13 @@ public class ADGController extends MasterController {
 		List<String> accountNumbers = new ArrayList<String>();
 		for (int i = 0; i < accounts.size(); i++) {
 			Account acct = accounts.get(i);
-			accountNumbers.add(acct.getAccountNo() + " - " + acct.getAccountDesc());
+			accountNumbers.add(MessageUtils.getAccountDisplayString(acct.getAccountNo(), acct.getAccountDesc()));
 		}
 
 		mav.addObject("accounts", accountNumbers);
 
 		//List<String> adGroups = AWSGroupsServiceImpl.authenticate(sessionUser.getEmailId(), sessionUser.getPassword());
-		List<String> adGroups = ADGroupsServiceImpl.getGroupsByServiceAccount();
+		List<String> adGroups = ADGroupsServiceImpl.getADGroupsByServiceAccount();
 		
 		mav.addObject("adGroups", adGroups);
 
@@ -97,13 +99,17 @@ public class ADGController extends MasterController {
 	 * @return a string to redirect the page back to AD Groups
 	 */
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-	public String add(@ModelAttribute(value = "adg") ADG adg, HttpServletRequest request) {
+	public ModelAndView add(@ModelAttribute(value = "adg") ADG adg, HttpServletRequest request) {
 		User sessionUser = (User) request.getSession().getAttribute("user");
 		adg.setLastUpdatedBy(sessionUser.getEmailId());
-		adg.setAccountNo(adg.getAccountNo().substring(0, 12));
+		adg.setAccountNo(MessageUtils.getAccountString(adg.getAccountNo()));
 		adgService.addADG(adg);
 		logger.info("Added new ADG="+adg +" sessionUser="+sessionUser);
-		return "redirect:viewAllADG.htm";
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("adgViewAll");
+		mav.addObject("adgs", ADGroupRoleMaster.getAllADG());
+		mav.addObject("adg",new ADG());
+		return mav;
 	}
 
 	/**
@@ -120,7 +126,7 @@ public class ADGController extends MasterController {
 
 		ARPServiceImpl arpService = new ARPServiceImpl();
 
-		List<ARP> arps = arpService.getARPByAccountNo(accountNumber.substring(0,12));
+		List<ARP> arps = arpService.getARPByAccountNo(MessageUtils.getAccountString(accountNumber));
 
 		JSONArray arr = new JSONArray();
 		if (arps != null && arps.size() > 0) {
@@ -148,20 +154,37 @@ public class ADGController extends MasterController {
 		logger.info("accountNo=" + accountNumber + " role=" + role);
 
 		ARPServiceImpl arpService = new ARPServiceImpl();
-		String accountId = arpService.getAccountIdbyAccountNoAndAWSRole(
-				accountNumber.substring(0, 12), role);
+		String accountId = arpService.getAccountIdbyAccountNoAndAWSRole(MessageUtils.getAccountString(accountNumber), role);
 		JSONArray arr = new JSONArray();
 		arr.put(accountId);
 		logger.info("getAccountId=" + arr);
 		return arr.toString();
 	}
 
-	/*
-	@RequestMapping(value = "delete", method = RequestMethod.POST)
-	public String delete(@ModelAttribute(value = "adg") ADG adg) {
+
+	@RequestMapping(value="deleteADG", method=RequestMethod.GET)
+	public String updateAccount(@RequestParam(value = "accountId", required = true) String accountId, @RequestParam(value = "adGroup", required = true) String adGroup, HttpServletRequest request){
+			
+		User sessionUser = (User) request.getSession().getAttribute("user");
+		logger.info("AccountId="+accountId+ " Update flag="+adGroup + " User="+sessionUser);
+
 		// account.setDeleteFlag(true);
-		adgService.addADG(adg);
+		ADG adg = new ADG();
+		adg.setAccountId(accountId);
+		adg.setAdGroup(adGroup);
+		adg.setLastUpdatedBy(sessionUser.getEmailId());
+		
+		boolean flag = adgService.deleteADG(adg);
+		
+		//TODO Handle error/success
+		
+		if(flag){
+			
+		}else{
+			
+		}
+		
 		return "redirect:viewAllADG.htm";
 	}
-	*/
+	
 }

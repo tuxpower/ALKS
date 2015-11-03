@@ -45,30 +45,28 @@ public class ADGroupRoleMaster {
 		return list;
 	}
 
-	/**
-	 * Gets account role policy values for each AD group
-	 * that matches the account number given
-	 * 
-	 * @return role policy values
-	 */
-	public static List<ADG> getADGByAccountNo(String accountNo){
-		 ADGServiceImpl adgService = new ADGServiceImpl();
-		 ARPServiceImpl arpService = new ARPServiceImpl();
-		 List<ARP> arpList = arpService.getARPByAccountNo(accountNo);
-
-		List<ADG> list = adgService.getAllADGs(); 
-		//TODO Check how to reduce number of calls to arpService.
-		if(arpList!=null && arpList.size()>0){
-			for(int i =0;i<arpList.size();i++){
-				ARP arp = arpList.get(i);				
-				ADG adg = adgService.getADGByAccountId(arp.getId());
-				adg.setAccountNo(arp.getAccountNo());
-				adg.setRole(arp.getRole());
-			}
-		}
-		return list;
-	}
-	
-	
+//	/**
+//	 * Gets account role policy values for each AD group
+//	 * that matches the account number given
+//	 * 
+//	 * @return role policy values
+//	 */
+//	public static List<ADG> getADGByAccountNo(String accountNo){
+//		 ADGServiceImpl adgService = new ADGServiceImpl();
+////		 ARPServiceImpl arpService = new ARPServiceImpl();
+////		 List<ARP> arpList = arpService.getARPByAccountNo(accountNo);
+//
+//		List<ADG> list = adgService.getAllADGs(); 
+//		//TODO Check how to reduce number of calls to arpService.
+////		if(arpList!=null && arpList.size()>0){
+////			for(int i =0;i<arpList.size();i++){
+////				ARP arp = arpList.get(i);				
+////				ADG adg = adgService.getADGByAccountId(arp.getId());
+////				adg.setAccountNo(arp.getAccountNo());
+////				adg.setRole(arp.getRole());
+////			}
+////		}
+//		return list;
+//	}
 	
 }

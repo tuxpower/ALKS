@@ -7,11 +7,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.alks.model.db.AccountRolePolicyRecord;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.alks.model.db.AccountRolePolicyRecord;
 
 /**
  * Database class to retrieve and store Role Policy relationship data
@@ -24,7 +24,7 @@ public class AccountRolePolicyDAO extends BaseDAO {
 
 	private static Logger logger = Logger.getLogger(AccountRolePolicyDAO.class);
 
-	static String ACCOUNT_ID = "accounts_accountNo";
+	static String ACCOUNT_NO = "accounts_accountNo";
 	static String ROLE = "role";
 	static String ID = "id";
 	
@@ -48,7 +48,7 @@ public class AccountRolePolicyDAO extends BaseDAO {
 	 */
 	public List<AccountRolePolicyRecord> getARPByAccountNo(String accountNo) {	
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        scanExpression.addFilterCondition( ACCOUNT_ID, 
+        scanExpression.addFilterCondition( ACCOUNT_NO, 
                 new Condition()
                    .withComparisonOperator(ComparisonOperator.EQ)
                    .withAttributeValueList(new AttributeValue().withS(accountNo)));
@@ -68,7 +68,7 @@ public class AccountRolePolicyDAO extends BaseDAO {
 	public List<AccountRolePolicyRecord> getARPByAccountNoAndAWSRole(String accountNo, String awsRole) {
 		
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-        scanExpression.addFilterCondition(ACCOUNT_ID, 
+        scanExpression.addFilterCondition(ACCOUNT_NO, 
                 new Condition()
                    .withComparisonOperator(ComparisonOperator.EQ)
                    .withAttributeValueList(new AttributeValue().withS(accountNo)));

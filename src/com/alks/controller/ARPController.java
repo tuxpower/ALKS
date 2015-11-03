@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.amazonaws.services.identitymanagement.model.Role;
+import com.amazonaws.util.json.JSONArray;
 import com.alks.model.ui.ARP;
 import com.alks.model.ui.Account;
 import com.alks.model.ui.User;
@@ -24,8 +26,6 @@ import com.alks.service.config.MessageUtils;
 import com.alks.service.delegate.ARPDeligate;
 import com.alks.service.delegate.GenerateKeyDelegate;
 import com.alks.service.impl.AccountServiceImpl;
-import com.amazonaws.services.identitymanagement.model.Role;
-import com.amazonaws.util.json.JSONArray;
 
 /**
  * The controller for Role Policies section of ALKS
@@ -101,7 +101,7 @@ public class ARPController extends MasterController{
 
 			String arpDesc = arp.getAccountNo();
 			logger.debug("AccountDesc="+ arpDesc);
-			arp.setAccountNo(arpDesc.substring(0, 12));
+			arp.setAccountNo(MessageUtils.getAccountString(arpDesc));
 			User sessionUser = (User) request.getSession().getAttribute("user");
 			arp.setLastUpdatedBy(sessionUser.getEmailId());
 			
@@ -113,7 +113,7 @@ public class ARPController extends MasterController{
 				
 			}
 			if(keys==null){
-				logger.debug("Keys null, invalid policy");
+				logger.debug("Keys null, invalid policy or the keys don't have GetFederatedToken access");
 				return "redirect:new.htm?error=true";
 			}else{			
 				arpService.addARP(arp);
@@ -123,6 +123,7 @@ public class ARPController extends MasterController{
 		}
 		
 		/**
+		 * 
 		 * Request to get the roles for the Role Policies controller
 		 * 
 		 * @param accountNumber
@@ -132,7 +133,7 @@ public class ARPController extends MasterController{
 		public @ResponseBody String getRoles(@RequestParam(value = "accountNumber", required = true) String accountNumber) {
 			
 			logger.debug("accountNo="+ accountNumber);
-			accountNumber = accountNumber.substring(0,12);
+			accountNumber = MessageUtils.getAccountString(accountNumber);
 			AccountServiceImpl asi = new AccountServiceImpl();
 			String[] keys = asi.getLongTermKeys(accountNumber);
 			

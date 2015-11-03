@@ -9,8 +9,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.log4j.Logger;
 
-import com.alks.service.aws.BaseAWS;
-import com.alks.service.config.MessageUtils;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -20,6 +18,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.EncryptionMaterialsProvider;
 import com.amazonaws.services.dynamodbv2.datamodeling.encryption.providers.SymmetricStaticProvider;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.alks.service.aws.BaseAWS;
+import com.alks.service.config.MessageUtils;
 
 /**
  * The base for any database class that encrypts data
@@ -51,7 +51,7 @@ public class BaseEncryptDAO extends BaseDAO {
 		try{
 
 			  InputStream keystoreStream = this.getClass().getClassLoader()
-                    .getResourceAsStream("alks.jck");
+                    .getResourceAsStream("alksopen.jck");
 
 		 	  KeyStore keystore = KeyStore.getInstance("JCEKS");
 		 	  keystore.load(keystoreStream, keyFilePass.toCharArray());

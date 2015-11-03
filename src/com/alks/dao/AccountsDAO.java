@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.alks.model.db.AccountRecord;
-import com.alks.service.config.MessageUtils;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.alks.model.db.AccountRecord;
+import com.alks.service.config.MessageUtils;
 
 /**
  * Database class to retrieve and store account data
@@ -24,7 +24,6 @@ public class AccountsDAO extends BaseEncryptDAO {
 	private static Logger logger = Logger.getLogger(AccountsDAO.class);
 
 	static String ACCOUNT_NO = "accountNo";
-	static String ACCOUNTS_TABLE = "accounts";
 	static String ACCESSKEY = "accessKey";
 	static String SECRETKEY = "secretKey";
 	static String ACTIVE = "active";
@@ -192,5 +191,5 @@ public class AccountsDAO extends BaseEncryptDAO {
 		
 		return keys;
 	}
-
+	
 }

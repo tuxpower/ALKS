@@ -1,14 +1,22 @@
 <%@ include file="commons/include.jsp"%>
 
-<div class="login-form">
-	<br>
-	<h1>Login Form</h1>
-	<form:form id="loginForm" action="validate.htm" method="POST" modelAttribute="user">
-
-<form:input path="emailId"  placeholder="email" />
-<form:password path="password"  placeholder="password"/><br>
+<script type="text/javascript">
+function submitForm(event) {
+     if(event.keyCode == 13) {
+          loginForm.submit();
+     }
+}
+</script>
+ 
+<div class="wrapper">
+<!-- 	<h2 class="form-signin-heading">Login Form</h2> -->
+<form:form class="form-signin" id="loginForm" action="../login/validate.htm" method="POST" modelAttribute="user">
+<h2 class="form-signin-heading" align="center">Please Login</h2>
+<form:input class="form-control" path="emailId"  placeholder="Email" />
+<br>
+<form:password class="form-control" path="password" onKeyUp="submitForm(event)"  placeholder="Password"/><br>
 		
-<a class="buttonLink center" onkeypress="" onclick="loginForm.submit();"> Login </a>
+<button class="btn btn-lg btn-primary btn-block" type="submit" > Login </button>
 
 <script>
  $("#emailId").attr('required', ''); 

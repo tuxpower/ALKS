@@ -27,4 +27,7 @@ public interface ADGService {
 	 * @param adg
 	 */
 	void addADG(ADG adg);
+	
+	boolean deleteADG(ADG adg);
+	
 }

@@ -25,7 +25,7 @@ The purpose of the tool is to automate generation of federated tokens on demand.
 *	Critical account data is encrypted in DynamoDB using client side encryption
 
 ###Design Constraints
-AWS SDK has a constrained policy length (2048 bytes) to generate tokens. 
+AWS SDK has a constrained policy length (2048 bytes) to generate tokens. Refer topic "Policy limitation Work around" below.
 Refer to the following document: http://docs.aws.amazon.com/STS/latest/APIReference/API_GetFederationToken.html
  
 ####Policy limitation Work around: 
@@ -48,13 +48,14 @@ http://docs.aws.amazon.com/STS/latest/APIReference/API_GetFederationToken.html
 ###Installation and Setup
 1. Get the project from git and setup as a Dynamic Web project. Make changes to the build path as needed. 
 2. Update the properties file with all the configuration values and customized messages. Refer to properties file descriptions for additional details.
-3. Create a keystore file (alks.jck) to store your encryption keys for encrypting long term keys that will be stored in DynamoDB. You should save this file in src folder (or in the classpath).
+3. Create a keystore file (alksopen.jck) to store your encryption keys for encrypting long term keys that will be stored in DynamoDB. You should save this file in src folder (or in the classpath). (I have included an example file whcih should be replaced)
 4. Authentication: This application uses core javax.naming.* package to validate users against LDAP. To identify an admin user, add a new AD group and update the messages.properties file. User should be part of the group to be recognized as an admin.
 5. DynamoDB: Create three tables with following columns 
-    - accounts(accountNo -> HashKey)
-    - accountrolepolicy(id -> HashKey)
-    - accountidgroup(accountrolepolicy_id -> HashKey and adGroup -> RangeKey) 
-      Use java file (ALKSDynamoDBSchema.java) to create these tables.
+    - com.alks.table.accounts(accountNo -> HashKey)
+    - com.alks.table.accountrolepolicy(id -> HashKey)
+    - com.alks.table.accountidgroup(accountrolepolicy_id -> HashKey and adGroup -> RangeKey) 
+      Use java file (ALKSDynamoDBSchema.java) to create these tables. Change table names as per your company standards. Do sync the names in com.alks.model.db package.
+ 6. Setup users in AD (AWSG_ADMIN_ALKS - Admin user, AWSG_CLOUDENGG_ROLE etc)
 
 ###AWS Services/APIs Utilized
 1. AWS IAM Services
@@ -133,6 +134,11 @@ AD Group relation screen
 Add AD Group relation screen
 
 ![Screen Shot AD Group Relation ](/images/add_adg.png)
+
+
+Additional Tips and customizations
+1. Convert to a Maven project
+2. Userid's created for the long term keys should not have '-' as this is used as a delimiter for display purposes
 
 ###References 
 

@@ -1,6 +1,8 @@
 package com.alks.service.config;
 
+import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,8 +23,12 @@ public class MessageUtils {
 	public static String WARN = "warn";
 	public static String INFO = "info";
 	public static String DEBUG = "debug";
+	private static SimpleDateFormat dateFormatter 
+			= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+	static{
+		dateFormatter.setTimeZone(TimeZone.getTimeZone("EST"));
+	}
 	
-
 	/**
 	 * Retrieves the current error message 
 	 * 
@@ -66,5 +72,39 @@ public class MessageUtils {
 		}
 		return request.getRemoteAddr();
 	}
+	
+	
+	/**
+	 * This method is an utility method to get account number 
+	 * from accountNumber+account description string which is used for display purposes
+	 * @param accountNumber
+	 * @return
+	 */
+	public static String getAccountString(String accountNumber){
+		return accountNumber.substring(0, accountNumber.indexOf('-')-1);
+	}
+	/**
+	 * This method returns a cancatenated string of account number and account description 
+	 * for display purposes
+	 * @param accountNumber
+	 * @param accountDesc
+	 * @return
+	 */
+	public static String getAccountDisplayString(String accountNumber, String accountDesc){
+		return accountNumber + " - " + accountDesc;
+	}
+	
+
+	// public static String getConfigValue(String key) {
+	//
+	// try {
+	// PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
+	// ppc.setBeanName("locations");
+	// return rbms.getMessage(key, null, Locale.getDefault());
+	// }
+	// catch (Exception e) {
+	// return "Unresolved key: " + key;
+	// }
+	// }
 
 }

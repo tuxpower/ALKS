@@ -1,54 +1,41 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="robots" content="noindex,follow" />
-	
-	<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-	<link rel="stylesheet" type="text/css" href="../lib/sweet-alert.css">
-	<link rel="stylesheet" href="../css/ui.css"  media="screen">
-		
-	<script src="../lib/sweet-alert.min.js"></script>
-	<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
-	<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-	
+
+<link rel="stylesheet" href="../css/bootstrap.min.css">	
+<link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+<!-- Sweet Alerts -->
+<link rel="stylesheet" type="text/css" href="../lib/sweet-alert.css">
+<script src="../lib/sweet-alert.min.js"></script>
+
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<tiles:insertAttribute name="header" />	
 	<title>
 		<tiles:insertAttribute name="title" ignore="true" />
 	</title>
+	<tiles:insertAttribute name="menu" />
 </head>
 
+
 <body class="background">
-	<table class="noBorder background" cellspacing="10">
-		<tr>
-			<td>
-				<tiles:insertAttribute name="header" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<tiles:insertAttribute name="menu" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<tiles:insertAttribute name="messages" />
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<div id="content">
-					<tiles:insertAttribute name="body" />
-				</div>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<tiles:insertAttribute name="footer" />
-			</td>
-		</tr>
-	</table>
-</body>
+
+<div class="container">				
+	<div id="content">
+	<tiles:insertAttribute name="messages" />
+	
+	<tiles:insertAttribute name="body" />
+	<tiles:insertAttribute name="footer" />
+	</div>
+</div>
+
+</body> 
 </html>
+

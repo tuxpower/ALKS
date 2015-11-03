@@ -19,6 +19,7 @@
 										function() {
 											$
 													.ajax({
+														async: false,
 														type : 'GET',
 														url : "${findRolesURL}",
 														data : "accountNumber="
@@ -35,7 +36,7 @@
 															}
 															html += '</option>';
 
-															$('#role').html(
+															$('#roleField').html(
 																	html);
 														},
 														error : function(e) {
@@ -48,11 +49,12 @@
 	$(document)
 			.ready(
 					function() {
-						$('#role')
+						$('#roleField')
 								.change(
 										function() {
 											$
 													.ajax({
+														async: false,
 														type : 'GET',
 														url : "${findAccountIdURL}",
 														data : "role="
@@ -61,7 +63,7 @@
 																+ $('#accountNo').val(),
 														success : function(data) {
 															var obj = JSON
-															.parse(data);
+															.parse(data);															
 															$('#accountId').val(obj[0]);
 														},
 														error : function(e) {
@@ -78,78 +80,69 @@
 			adGroup.enable = true;
 		}
 	}*/
-	
-	function validateForm(){
-		var roleInd = document.getElementById('role').selectedIndex;
-		if(roleInd==0){
-			swal("Please select account and role");
-		}else{
-			var adGroupInd = document.getElementById('adGroup').selectedIndex;
-			if(adGroupInd==0){
-				swal("Please select an AD Group");
-			}else{
-				ADGForm.submit();
-			}
-		}
-	}
+
 
 
 </script>
 
 
-<form:form id="ADGForm" action="add.htm" method="POST" modelAttribute="adg">
-	<table>
-		<tr>
-			<td align="right">
-				<span style="display: block;"> 
-					<label for="accountNo">Account Number:</label>
-				</span>
-			</td>
-			<td align="center">
-				<span style="display: inline-block; min-width: 300px;"> 
-					<form:select id="accountNo" path="accountNo">
+<script type="text/javascript">
+	
+	function validateForm(){
+		var roleInd = document.getElementById('roleField').selectedIndex;
+		var adgForm = document.forms['ADGForm'];
+		if(roleInd==0){
+			swal("Please select account and role");
+		}else{
+			var adGroupInd = document.getElementById('adGroupField').selectedIndex;
+			if(adGroupInd==0 || adGroupInd==null){
+				swal("Please select an AD Group");
+			}else{
+				adgForm.submit();
+			}
+		}
+	}
+</script>	
+
+<form:form id="ADGForm" action="add.htm" data-ajax="false" method="POST" modelAttribute="adg">
+    <div class="col-xs-7">
+    <label  for="AccountNumber">Account Number</label>
+					<form:select class="form-control" id="accountNo" path="accountNo">
 						<form:option value="NONE" label="Select Account " />
 						<form:options items="${accounts}" />
 					</form:select>
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-				<span style="display: block;">
-					<label for="Role">AWS Role:</label>
-				</span>
-			</td>
-			<td align="center">
-				<span style="display: inline-block; min-width: 300px;">
-					<form:select id="role" path="role">
+  </div>
+  <div class="col-xs-7">
+  <label>&nbsp;</label>
+  </div>
+  <div class="col-xs-7">
+    <label for="AWS Role">AWS Role</label>
+					<form:select class="form-control" id="roleField" path="role">
 						<form:option value="">Select Role</form:option>
 					</form:select>
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-				<span style="display: block;">
-					<label for="accountNo">AD Group:</label>
-				</span>
-			</td>
-			<td align="center">
-				<span style="display: inline-block; min-width: 300px;">
-					<form:select id="adGroup" path="adGroup">
+  </div>
+  <div class="col-xs-7">
+  <label>&nbsp;</label>
+  </div>
+  <div class="col-xs-7">
+    <label for="AD Group">AD Group</label>
+					<form:select class="form-control" id="adGroupField" path="adGroup">
 						<form:option value="">Select AD Group</form:option>
 						<form:options items="${adGroups}" />
 					</form:select>
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<td align="center" colspan="2">
-				<span style="display: block;">
-					<a class="buttonLink addButton" onclick="validateForm()"> Add/Update </a>
-				</span>
-			</td>
-		</tr>
-	</table>
+  </div>
+
+
+  <div class="col-xs-7">
+  <label>&nbsp;</label>
+  </div>
+
+   <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-5">
+      <a class="btn btn-primary btn-sm"  onclick="validateForm();"> Add/Update </a>
+    </div>
+   </div>
+
 <form:hidden path="accountId" />
+
 </form:form>

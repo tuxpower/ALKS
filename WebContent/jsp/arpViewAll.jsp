@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<link rel="stylesheet" href="../css/ui.css" media="screen">
+
 <script type="text/javascript">
 <!--
 function deleteConfirm(text){
@@ -24,12 +24,18 @@ Copied.execCommand("Copy");
 
 </script>
 
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover(); 
+});
+</script>
+ 
 <%@ include file="commons/include.jsp"%>
 
-<table>
+<table class="table table-striped">
 	<thead>
 		<tr class='heading'>
-			<th>AWS Account</th>
+			<th>AWS Account/User Name - Description</th>
 			<th>Role</th>
 			<th>Policy</th>
 			<th>Last Modified</th> 
@@ -40,14 +46,13 @@ Copied.execCommand("Copy");
 			<tr  class="${theCount.index % 2 == 0 ? 'even' : 'odd'}">
 				<td>${arp.accountNo}</td>
 				<td>${arp.role}</td>
-				<td><div class="center"><a href="#divIDNo${theCount.count}" data-rel="popup">Show</a></div>
-					<div data-role="popup" id="divIDNo${theCount.count}">
-						<h3>Policy Details</h3>
-						<pre>${arp.policy}</pre>
-						<BUTTON onClick="ClipBoard(divIDNo${theCount.count});">Click to Copy</BUTTON>
-					</div></td>	
-				<!-- td><input class="menu" type="button" value="Inactivate"
-					onclick='deleteConfirm(${arp.id});' /></td-->
+		
+				<td>
+				<a href="#" onclick="return false" data-toggle="popover" data-content='${arp.policy}'  >
+					Show Policy
+    			</a>
+				</td>	
+		
 				<td>
 					<div id="lastModified">
 				    	<c:if test="${ fn:contains(arp.lastUpdatedBy, '@')}">
@@ -65,4 +70,4 @@ Copied.execCommand("Copy");
 	</tbody>
 </table>
 
-<div id="addButtonContainer" align="center"><a class="buttonLink" href="new.htm"><b id="addSign">+</b> ARP</a></div>
+<div id="addButtonContainer" align="center"><a class="btn btn-primary btn-sm" href="new.htm"><b id="addSign">+</b> ARP</a></div>

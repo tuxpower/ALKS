@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.alks.model.aws.LongTermKey;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient;
 import com.amazonaws.services.identitymanagement.model.AccessKey;
@@ -17,6 +16,7 @@ import com.amazonaws.services.identitymanagement.model.GetRoleResult;
 import com.amazonaws.services.identitymanagement.model.ListAccessKeysResult;
 import com.amazonaws.services.identitymanagement.model.ListAccountAliasesResult;
 import com.amazonaws.services.identitymanagement.model.Role;
+import com.alks.model.aws.LongTermKey;
 
 /**
  * Manages a Amazon Identity Management Client
@@ -106,16 +106,18 @@ public class MasterIAMService {
 		logger.info(alias.getAccountAliases().get(0));		
 		logger.info(aimc.getUser());
 		logger.info(aimc.getUser().getUser().getArn());
+		logger.info(aimc.getUser().getUser().getUserName());
 	       
 		String msg = aimc.getUser().getUser().getArn();
 		int arnIdx = msg.indexOf("::")+2;
-		String[] account = new String[2];
+		String[] account = new String[3];
 	        if (arnIdx != -1) {
 	            String arn = msg.substring(arnIdx, arnIdx+12);
 	            account[0] = arn;
 	        }
 	        //Account Alias
 	        account[1] = alias.getAccountAliases().get(0);
+	        account[2] = aimc.getUser().getUser().getUserName();
 	        
 	       return account;
 	}
@@ -168,6 +170,5 @@ public class MasterIAMService {
 		}
 		return ltk;
 	}
-	
 }
 

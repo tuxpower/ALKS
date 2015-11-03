@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>alks</groupId>
-	<artifactId>alks</artifactId>
+	<groupId>alksv2</groupId>
+	<artifactId>alksv2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
@@ -131,6 +131,31 @@
 			<version>1.0</version>
 			<systemPath>${basedir}/WebContent/WEB-INF/lib/aws-dynamodb-encryption.jar</systemPath>
 		</dependency>
+
+<!-- Rest service dependency -->
+
+<dependency>
+	<groupId>asm</groupId>
+	<artifactId>asm</artifactId>
+	<version>3.3.1</version>
+</dependency>
+<dependency>
+	<groupId>com.sun.jersey</groupId>
+	<artifactId>jersey-bundle</artifactId>
+	<version>1.19</version>
+</dependency>
+<dependency>
+	<groupId>org.json</groupId>
+	<artifactId>json</artifactId>
+	<version>20141113</version>
+</dependency>
+<dependency>
+	<groupId>com.sun.jersey</groupId>
+	<artifactId>jersey-server</artifactId>
+	<version>1.19</version>
+</dependency>
+
+
 
 	</dependencies>
 	<packaging>war</packaging>

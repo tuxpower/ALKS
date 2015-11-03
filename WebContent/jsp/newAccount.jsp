@@ -14,16 +14,16 @@ $(document)
 					.keyup(function() {
 						var accessKey = $('#accessKey').val();
 						var secretKey = $('#secretKey').val();
-						if(accessKey != null && secretKey != null){
+						if(accessKey != null && accessKey != '' && secretKey != null && secretKey != ''){
 							callAjax();
 						}
 			});
 			$('#accessKey')
-			.keyup(function() {
-				var accessKey = $('#accessKey').val();
-				var secretKey = $('#secretKey').val();
-				if(accessKey != null && secretKey != null){
-					callAjax();;
+					.keyup(function() {
+						var accessKey = $('#accessKey').val();
+						var secretKey = $('#secretKey').val();
+						if(accessKey != null && accessKey != '' && secretKey != null && secretKey != ''){
+							callAjax();;
 						}
 			});
 
@@ -41,7 +41,8 @@ function callAjax(){
 		success : function(data) {
 			var obj = JSON
 			.parse(data);
-			$('#accountNo').val(obj[0]);
+			
+			$('#accountNo').val(obj[0]+"/"+obj[2]);
 			$('#accountDesc').val(obj[1]);
 
 			if(obj[0]==NaN){
@@ -58,10 +59,17 @@ function callAjax(){
 }
 
 
+
+//-->
+</script>
+
+<script type="text/javascript">
+
 function validateForm(){
 	var accessKey = document.getElementById('accessKey').value;
 	var secretKey = document.getElementById('secretKey').value;
 	var accountDesc = document.getElementById('accountDesc').value;
+	var accountForm = document.forms['AccountForm'];
 	if(accessKey==NaN || accessKey==''){
 		swal("Please enter accessKey");
 	}
@@ -71,63 +79,48 @@ function validateForm(){
 	else if(accountDesc==NaN || accountDesc==''){
 		swal("Please enter accountDesc");
 	}else{
-		AccountForm.submit();
+		accountForm.submit();
 	}
 }
 
-
-//-->
 </script>
-<form:form id="AccountForm" action="add.htm" method="POST" modelAttribute="account">
 
-<table>
-	<tr>
-		<td align="right">
-				<label for="accessKey">Access Key: *</label>
-		</td>
-		<td align="center">
-				<span style="display: inline-block; min-width: 400px;">
-					<form:input path="accessKey" />	
-				</span>
-		</td>	
-	</tr>
-	<tr>
-		<td align="right">
-				<label for="secretKey">Secret Key: *</label>
-		</td>
-		<td align="center">
-				<span style="display: inline-block; min-width: 400px;">
-					<form:input path="secretKey" />	
-				</span>
-		</td>	
-	</tr>
-		<tr>
-		<td align="right">
-				<label for="accountNo">Account Number <br>(Read Only) : *</label>
-		</td>
-		<td align="center">
-				<span style="display: inline-block; min-width: 400px;">
-					<form:input readonly="true" path="accountNo"/>
-				</span>
-		</td>
-	</tr>
-	<tr>
-		<td align="right">
-				<label for="accountDesc">Account Name:</label>
-		</td>
-		<td align="center">
-				<span style="display: inline-block; min-width: 400px;">
-					<form:input path="accountDesc"/>
-				</span>
-		</td>
-	</tr>
-	<tr>
-		<td align="center" colspan="2">
-			<span style="display: inline-block; min-width: 100px;">
-				<a class="buttonLink addButton" onclick="validateForm();"> Add/Update </a>
-			</span>
-		</td>
-	</tr>
-	
-</table>
+<form:form class="form-horizontal" id="AccountForm" role="form" action="add.htm" method="POST" modelAttribute="account">
+
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="Access Key">Access Key*</label>
+    <div class="col-sm-5">
+    <form:input class="form-control input-sm" path="accessKey"/>
+    </div>
+  </div>
+ 
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="Secret Key">Secret Key*</label>
+    <div class="col-sm-8">
+    <form:input class="form-control input-sm" path="secretKey"/>
+    </div>
+  </div>
+  
+ 
+ <div class="form-group">
+    <label class="col-sm-2 control-label" for="Account Number">Account Number/AWS UserID (Read Only)</label>
+    <div class="col-sm-6">
+    <form:input class="form-control input-sm" readonly="true" path="accountNo"/>
+    </div>
+  </div>
+ 
+  
+ <div class="form-group">
+    <label class="col-sm-2 control-label" for="Account Name">Account Name</label>
+    <div class="col-sm-6">
+    <form:input class="form-control input-sm" path="accountDesc"/>
+    </div>
+  </div>
+   
+   <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <a class="btn btn-primary btn-sm"  onclick="validateForm();"> Add/Update </a>
+    </div>
+  </div>
 </form:form>

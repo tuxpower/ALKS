@@ -148,60 +148,49 @@
 </script>
 
 
-<form:form id="ARPForm" action="add.htm" method="POST" modelAttribute="arp">
-	<table>
-		<tr>
-			<td align="right">
-				<span style="display: block;">
-					<label for="accountNo">Account Number: *</label>
-				</span>
-			</td>
-			<td align="center">
-				<span style="display: inline-block; min-width: 300px;">
-					<form:select id="accountNo" path="accountNo">
+<form:form id="ARPForm" role="form" action="add.htm" method="POST" modelAttribute="arp">
+
+    <div class="col-xs-7">
+    <label  for="AccountNumber">Account Number*</label>
+					<form:select class="form-control" id="accountNo" path="accountNo">
 						<form:option value="NONE" label="Select Account" />
 						<form:options items="${accounts}" />
 					</form:select>
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-				<span style="display: block;">
-					<label for="accountNo">Role Name: *</label>
-				</span>
-			</td>
-			<td align="center">
-				<span style="display: inline-block; min-width: 300px;">
-					<form:select id="role" path="role">
+ 
+  </div>
+  <div class="col-xs-7">
+  <label>&nbsp;</label>
+  </div>
+  <div class="col-xs-7">
+    <label for="Role Name">Role Name: *</label>
+					<form:select class="form-control" id="role" path="role">
 						<form:option value="">Select Role</form:option>
 					</form:select>
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<td align="right">
-				<span style="display: block;">
-					<label for="policy">Policy: *</label>
-				</span>
-			</td>
-			<td align="center">
-				<span style="display: inline-block; width: 300px;">
-					<form:textarea placeholder="Maximum length of 2048. Use link https://policysim.aws.amazon.com/home/index.jsp"
-								   onKeyUp="enforceMaxLength(this);" rows="40" cols="80"
+  </div>
+  <div class="col-xs-7">
+  <label>&nbsp;</label>
+  </div>
+  <div class="col-xs-7">
+    <label for="policy">Policy: *</label>
+                <span>
+					<form:textarea class="form-control" placeholder="Maximum length of 2048. Use link https://policysim.aws.amazon.com/home/index.jsp"
+								   onKeyUp="enforceMaxLength(this);" rows="8" cols="80"
 								   path="policy" id="policy" />
 								   
-				</span><a href="https://policysim.aws.amazon.com/home/index.jsp">Policy Help</a>
-			</td>
-		</tr>
-		<tr>
-			<td align="center" colspan="2">
-				<span style="display: block;">
-					<a class="buttonLink addButton" onclick="validateForm();">Add/Update</a>
-				</span>
-			</td>
-		</tr>
-	</table>
+				<a href="https://policysim.aws.amazon.com/home/index.jsp">Policy Help</a></span>
+  </div>
+  <div class="col-xs-7">
+  <label>&nbsp;</label>
+  </div>
+
+   <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-5">
+      <a class="btn btn-primary btn-sm"  onclick="validateForm();">Add/Update</a>
+    </div>
+   </div>
+
+
+
 			 <script>
 			 $("#policy").attr('required', ''); 
 			 $("#accountNo").attr('required', ''); 

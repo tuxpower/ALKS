@@ -29,7 +29,7 @@ public class ADGServiceImpl implements ADGService {
 	@Override
 	public List<ADG> getAllADGs() {
 		List<ADG>  adgList = new ArrayList<ADG>();
-		List<AccountIdADGroupRecord> recList = adgDao.getAllAccountIDADGroup();
+		List<AccountIdADGroupRecord> recList = adgDao.getAllActiveAccountIDADGroup();
 		if(recList!=null){
 			for(int i=0;i<recList.size();i++){
 				AccountIdADGroupRecord ar = recList.get(i);
@@ -45,30 +45,37 @@ public class ADGServiceImpl implements ADGService {
 		return adgList; 
 	}
 
-	/**
-	 * Returns the AD Group using the account ID
-	 * 
-	 * @param accountId
-	 * @return AD Group
-	 */
-	public ADG getADGByAccountId(String accountId){
-		
-		AccountIdADGroupRecord adgRec = adgDao.getAccountIdGroup(accountId);
-		ADG adg = new ADG();
-		
-		adg.setAccountId(adgRec.getAccountId());
-		adg.setAdGroup(adgRec.getAdGroup());
-		adg.setLastUpdatedBy(adgRec.getUser());
-		adg.setLastUpdateTime(adgRec.getDate());
-		
-		return adg; 
-	}
+//	/**
+//	 * Returns the AD Group using the account ID
+//	 * 
+//	 * @param accountId
+//	 * @return AD Group
+//	 */
+//	public ADG getADGByAccountId(String accountId){
+//		
+//		AccountIdADGroupRecord adgRec = adgDao.getAccountIdGroup(accountId);
+//		ADG adg = new ADG();
+//		
+//		adg.setAccountId(adgRec.getAccountId());
+//		adg.setAdGroup(adgRec.getAdGroup());
+//		adg.setLastUpdatedBy(adgRec.getUser());
+//		adg.setLastUpdateTime(adgRec.getDate());
+//		
+//		return adg; 
+//	}
 	
 		
 	@Override
 	public void addADG(ADG adg) {
 		
 		adgDao.saveAccountIdGroupRecord(adg.getAccountId(), adg.getAdGroup(),adg.getLastUpdatedBy());
+
+	}
+
+	@Override
+	public boolean deleteADG(ADG adg) {
+		
+		return adgDao.deleteAccountIdGroupRecord(adg.getAccountId(), adg.getAdGroup(),adg.getLastUpdatedBy());
 
 	}
 

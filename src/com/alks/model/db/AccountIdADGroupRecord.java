@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
  * @author Kamen Tsvetkov
  *
  */
-@DynamoDBTable(tableName = "accountidgroup")
+@DynamoDBTable(tableName = "com.alks.table.accountidgroup")
 public class AccountIdADGroupRecord extends BaseModel {
 
 	private String accountId;

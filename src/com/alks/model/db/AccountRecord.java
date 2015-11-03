@@ -12,7 +12,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.encryption.DoNotTouch;
  * @author Kamen Tsvetkov
  *
  */
-@DynamoDBTable(tableName = "accounts")
+@DynamoDBTable(tableName = "com.alks.table.accounts")
 public class AccountRecord extends BaseModel {
 		
 	private String accountNo;

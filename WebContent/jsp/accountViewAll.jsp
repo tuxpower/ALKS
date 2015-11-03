@@ -65,6 +65,10 @@ function confirmUpdate(accountNumber,flag){
 
 }
 
+</script>
+
+<script type="text/javascript">
+
 function confirmRegenerate(accountNumber){
 	var flag=2;
 		swal(
@@ -122,7 +126,7 @@ function doStuff() {
 
 <form:form id="AccountForm" method="get"
 	modelAttribute="account">
-<table>
+<table class="table table-hover table-striped">
 	<thead>
 		<tr class='heading'> <th> AWS Account </th><th> Details </th> <th> Status Toggle </th> <th> Last Modified </th> </tr>
 	</thead>
@@ -130,7 +134,7 @@ function doStuff() {
 		<c:forEach items="${accountsToSearch}" var="account" begin="0" end="${fn:length(accounts)}" varStatus="loopStatus">
 			<tr  class="${loopStatus.index % 2 == 0 ? 'even' : 'odd'}">
 				<td><p><b>Account Name</b><br> ${account.accountDesc}<br>
-				<p><b>Account Number</b> <br> ${account.accountNo}</p></td>
+				<p><b>Account Number/User Name</b> <br> ${account.accountNo}</p></td>
 
 
 					<td> 
@@ -159,10 +163,10 @@ function doStuff() {
 				<td id="toggle">
 					<c:choose>
 						<c:when test="${(account.active == 1)}">	    					
-							<a class="buttonActive" onclick="confirmUpdate('${account.accountNo}',1);"> Active </a>
+							<a class="btn btn-success" onclick="confirmUpdate('${account.accountNo}',1);"> Active </a>
 						</c:when>
 						<c:when test="${(account.active == 0)}">
-	   						<a class="buttonInactive" onclick="confirmUpdate('${account.accountNo}',0);"> Inactive </a>
+	   						<a class="btn btn-warning" onclick="confirmUpdate('${account.accountNo}',0);"> Inactive </a>
 						</c:when>
 					</c:choose>
 				</td>
@@ -183,8 +187,8 @@ function doStuff() {
 	</tbody>
 </table>
 
-<div id="addButtonContainer" align="center"><a class="buttonLink" href="new.htm"><b id="addSign">+</b> Account</a></div>
+<div id="addButtonContainer" align="center"><a class="btn btn-primary btn-sm" href="new.htm"><b id="addSign">+</b> Account</a></div>
 
 <form:hidden path="accountNo" id="account"/>
 <form:hidden path="flag" id="flag"/>
-</form:form>
+</form:form> 

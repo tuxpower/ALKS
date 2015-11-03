@@ -59,14 +59,36 @@ public class LoginFilter implements Filter {
 		HttpSession session = req.getSession();
 		User sessionUser = (User) session.getAttribute("user");
 
-		if(servletPath.equals("/index.jsp") ||
+		if(servletPath.contains("/rest") || servletPath.equals("/index.jsp") ||
 									servletPath.equals(req.getContextPath()+"/index.jsp") || 
 										servletPath.equals("/login/loginPage.htm") ||
-											servletPath.equals("/login/validate.htm")){
+										servletPath.equals("/login/validate.htm")||
+										servletPath.endsWith("getAllAccounts.htm") ||
+										servletPath.endsWith("/login/logout.htm")){
 			chain.doFilter(req, resp);
 			return;
 		}
 		
+/*
+		logger.debug("Path: " + servletPath);
+		// Allow access to login functionality.
+		if (servletPath.equals("/index.jsp") || 
+				servletPath.equals(req.getContextPath()+"/index.jsp") || 
+				servletPath.equals("/login/loginPage.htm")) {
+			
+			if(servletPath.equals("/login/validate.htm") || servletPath.equals("/login/loginPage.htm")){
+				if(sessionUser == null){
+					logger.info("Session expired so redirect to login page.");					
+					resp.sendRedirect(req.getContextPath());
+				}
+				return;
+			}
+
+					
+			chain.doFilter(req, resp);
+			return;
+		}
+*/
 		
 		// Allow access to news feed.
 		if (servletPath.endsWith(".png") || (servletPath.endsWith(".css")) || (servletPath.endsWith(".jpg") )) {
@@ -80,7 +102,8 @@ public class LoginFilter implements Filter {
 			// User is logged in.
 			
 			//But if user is general user do not allow admin pages
-			if(!servletPath.equals("/login/validate.htm") && !sessionUser.isAdmin()){
+			//Allow all user related paths.
+			if(!servletPath.equals("/login/getKeys.htm") && !servletPath.equals("/login/validate.htm") && !sessionUser.isAdmin()){
 				resp.sendRedirect(req.getContextPath()+"/login/validate.htm");
 			}
 			

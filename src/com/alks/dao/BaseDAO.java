@@ -1,15 +1,13 @@
 package com.alks.dao;
 
 import java.text.SimpleDateFormat;
-
 import org.apache.log4j.Logger;
-
-import com.alks.service.aws.BaseAWS;
-import com.alks.service.config.MessageUtils;
 import com.amazonaws.regions.RegionUtils;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.alks.service.aws.BaseAWS;
+import com.alks.service.config.MessageUtils;
 
 /**
  * The base for any database class to establish connection to the database
@@ -60,6 +58,10 @@ public class BaseDAO {
 	 */
 	public DynamoDB getDynamoDB(){
 		return dynamoDB;
+	}
+	
+	public AmazonDynamoDBClient getClient(){
+		return client;
 	}
 		
 }

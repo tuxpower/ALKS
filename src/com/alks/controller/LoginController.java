@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.amazonaws.util.json.JSONArray;
 import com.alks.model.ui.Account;
 import com.alks.model.ui.User;
 import com.alks.service.config.MessageUtils;
 import com.alks.service.delegate.AccountMaster;
 import com.alks.service.delegate.GenerateKeyDelegate;
 import com.alks.service.impl.ADGroupsServiceImpl;
-import com.amazonaws.util.json.JSONArray;
 
 /**
  * The controller for logging in and the ALKS home page
@@ -41,7 +41,7 @@ import com.amazonaws.util.json.JSONArray;
 @SessionAttributes({"user"})
 public class LoginController {
 	private static Logger logger = Logger.getLogger(LoginController.class);
-	private static String ADMIN_AD_GROUP = MessageUtils.getMessage("ldap.service.adminGroup");
+	private static String ADMIN_AD_GROUP = MessageUtils.getMessage("ldap.service.account.adminGroup");
 	
 	/**
 	 * A request for the login page
@@ -51,8 +51,6 @@ public class LoginController {
 	 */
 	@RequestMapping(value="loginPage")
 	public ModelAndView loginPage(HttpServletRequest request){
-		
-	
 		request.getSession().invalidate();
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("loginPage");
@@ -94,7 +92,7 @@ public class LoginController {
 				user.setAuthenticated(true);
 				//If the logged in user is an admin then get all the groups so that he can create token for any role.
 				//Else we can change the logic so that admin can only create tokens when he adds himself to the AD group.
-				groups = ADGroupsServiceImpl.getGroupsByServiceAccount();
+				groups = ADGroupsServiceImpl.getADGroupsByServiceAccount();
 				logger.info("Admin user="+ user);
 			}
 			request.getSession().setAttribute("groups", groups);
@@ -154,6 +152,7 @@ public class LoginController {
 				mav.addObject("emailId", user.getEmailId());
 				mav.setViewName("listRoles");
 		}
+		
 		return mav;
 	}
 
@@ -191,25 +190,25 @@ public class LoginController {
 		
 		logger.debug("Selected account number is "+ accountNumber);
 		logger.debug("Selected role is "+ role);
-		logger.debug("Selected role is "+ time);
 		logger.info("Selected time is "+time);
 		
 		User sessionUser = (User) request.getSession().getAttribute("user");
 		logger.debug(sessionUser.getEmailId());
-		accountNumber = accountNumber.substring(0,12);
+		accountNumber = MessageUtils.getAccountString(accountNumber);
 		logger.debug("accountNo:" + accountNumber);
 		logger.debug("User email:" + sessionUser.getEmailId());
 		String userName = sessionUser.getEmailId().substring(0, sessionUser.getEmailId().indexOf('@'));
 		logger.debug(userName);
 		String[] keys = GenerateKeyDelegate.getKeys(userName, accountNumber,role,time);
-
 	
 		JSONArray arr = new JSONArray();
 		arr.put(keys[0]);
 		arr.put(keys[1]);
 		arr.put(keys[2]);
 		arr.put(keys[3]);
-		logger.debug("returing keys: AccessKey:" + keys[0] );
+
+		
+		logger.debug("returing keys: AccessKey:" + keys[0] );		
 		return arr.toString();
 	}
 	

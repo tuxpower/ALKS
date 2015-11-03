@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.amazonaws.util.json.JSONArray;
 import com.alks.model.ui.Account;
 import com.alks.model.ui.User;
 import com.alks.service.AccountService;
 import com.alks.service.aws.MasterIAMService;
-import com.amazonaws.util.json.JSONArray;
 
 /**
  * The controller for accounts section of ALKS
@@ -111,6 +111,8 @@ public class AccountController extends MasterController {
 		
 		arr.put(accountNoAlias[0]);
 		arr.put(accountNoAlias[1]);
+		arr.put(accountNoAlias[2]);
+		
 		logger.info("returing=" + arr);
 		}
 		return arr.toString();
@@ -147,7 +149,7 @@ public class AccountController extends MasterController {
 	
 	
 	/*  
-	 //TODO This is a generic error handler for account related functionality. Uncomment and customize if needed
+	 //TODO This is a generic error handler for account related functionality. Uncommet and customize if needed
 	 @ExceptionHandler(Exception.class)
 	  public ModelAndView handleError(HttpServletRequest req, Exception exception) {
 	    logger.error("Request: " + req.getRequestURL() + " raised " + exception);

@@ -12,7 +12,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
  * @author Kamen Tsvetkov
  *
  */
-@DynamoDBTable(tableName = "accountrolepolicy")
+@DynamoDBTable(tableName = "com.alks.table.accountrolepolicy")
 public class AccountRolePolicyRecord extends BaseModel {
 
 	private String id;

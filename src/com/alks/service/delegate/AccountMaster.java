@@ -14,6 +14,7 @@ import com.alks.model.db.AccountIdADGroupRecord;
 import com.alks.model.db.AccountRecord;
 import com.alks.model.db.AccountRolePolicyRecord;
 import com.alks.model.ui.User;
+import com.alks.service.config.MessageUtils;
 import com.alks.service.impl.ADGroupsServiceImpl;
 
 /**
@@ -76,7 +77,7 @@ public class AccountMaster {
 			  AccountRolePolicyRecord arp = (AccountRolePolicyRecord) arps.get(i);
 			  AccountRecord acctRec = acctDao.getAccountByAccountNo(arp.getAccountNo());
 			  if(acctRec.getActive()==1){
-				  String AccountNoDesc = arp.getAccountNo() + " - " + acctRec.getAccountDesc();
+				  String AccountNoDesc = MessageUtils.getAccountDisplayString(arp.getAccountNo(),acctRec.getAccountDesc());
 			  
 					if(accountRoles.containsKey(AccountNoDesc)){
 						List<String> tacctRoles = accountRoles.get(AccountNoDesc);
@@ -93,6 +94,64 @@ public class AccountMaster {
 		return accountRoles;
 		
 	}
+
+	
+	
+	/**
+	 * Get a map of accounts given a list of groups
+	 * 
+	 * @param groups
+	 * @return map of accounts
+	 */
+	public static Map<String,List<String>> getAccountsByAcctNo(List<String> groups){
+		
+		//Get all the AccountIds for this user
+		AccountIdADGroupDAO dao = new AccountIdADGroupDAO();
+		List<AccountIdADGroupRecord> accountIdRecs = dao.getAccountIdsByGroup(groups);
+		
+		List<String> accountIds = new ArrayList<String>();
+		
+		for(int i =0;i<accountIdRecs.size();i++){
+			AccountIdADGroupRecord acctIdRec = (AccountIdADGroupRecord) accountIdRecs.get(i);
+			accountIds.add(acctIdRec.getAccountId());
+		}
+		
+		//Get all ARP's using accountId list
+		AccountRolePolicyDAO arpDao = new AccountRolePolicyDAO();
+		List<AccountRolePolicyRecord> arps = arpDao.getARPsByAccountIds(accountIds);
+
+		//As we need account description when displaying acccounts we need to get it from Accounts table
+		AccountsDAO acctDao = new AccountsDAO();
+
+		//Create a Map that has AccountNo - Roles
+		
+		Map<String,List<String>> accountRoles = new HashMap<String,List<String>>();
+		
+		if(arps!=null && arps.size()>0){
+		  for(int i = 0;i<arps.size();i++){
+			  //Get the role
+			  AccountRolePolicyRecord arp = (AccountRolePolicyRecord) arps.get(i);
+			  AccountRecord acctRec = acctDao.getAccountByAccountNo(arp.getAccountNo());
+			  if(acctRec.getActive()==1){
+				  String AccountNoDesc = arp.getAccountNo();
+			  
+					if(accountRoles.containsKey(AccountNoDesc)){
+						List<String> tacctRoles = accountRoles.get(AccountNoDesc);
+						tacctRoles.add(arp.getRole());
+						//Should I add the list back?
+					}else{
+						List<String> tacctRoles = new ArrayList<String>();
+						tacctRoles.add(arp.getRole());
+						accountRoles.put(AccountNoDesc, tacctRoles);
+					}
+			  }
+		  }
+		}
+		return accountRoles;
+		
+	}
+
+	
 	
 	/**
 	 * Get a map of accounts that the user has access to
